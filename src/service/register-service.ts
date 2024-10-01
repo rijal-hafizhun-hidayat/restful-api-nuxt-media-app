@@ -8,7 +8,5 @@ export class RegisterService {
       RegisterValidation.registerRequest,
       request
     );
-
-    return requestBody;
   }
 }
