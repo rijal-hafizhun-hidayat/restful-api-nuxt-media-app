@@ -32,6 +32,15 @@ export class RegisterService {
       }),
     ]);
 
+    await prisma.$transaction([
+      prisma.user_role.create({
+        data: {
+          user_id: user.id,
+          role_id: 2,
+        },
+      }),
+    ]);
+
     return toRegisterResponse(user);
   }
 }
