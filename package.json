@@ -1,0 +1,22 @@
+{
+  "name": "restful-api-nuxt-crud",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "5.20.0",
+    "@types/express": "^5.0.0",
+    "express": "^4.21.0",
+    "prisma": "^5.20.0",
+    "zod": "^3.23.8"
+  }
+}
