@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import type { EmailRequest } from "../model/email-model";
 
-export class SendEmail {
+export class SendEmailUtils {
   static async send(data: EmailRequest) {
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
