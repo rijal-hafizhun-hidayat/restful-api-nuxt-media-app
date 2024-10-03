@@ -14,11 +14,42 @@ datasource db {
 }
 
 model user {
-  id                Int       @id @default(autoincrement())
-  name              String    @db.VarChar(255)
-  email             String    @unique @db.VarChar(255)
-  password          String    @db.VarChar(255)
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  id                Int              @id @default(autoincrement())
+  name              String           @db.VarChar(255)
+  email             String           @unique @db.VarChar(255)
+  password          String           @db.VarChar(255)
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt
   email_verified_at DateTime?
+  user_role         user_role[]
+  reset_password    reset_password[]
+}
+
+model role {
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(255)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  user_role  user_role[]
+}
+
+model user_role {
+  user_id    Int
+  role_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  role role @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([user_id, role_id])
+}
+
+model reset_password {
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @unique
+  token      Int      @unique
+  expired_at DateTime
+
+  user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
