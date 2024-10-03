@@ -2,10 +2,17 @@ import { prisma } from "../app/database";
 import type { RegisterRequest } from "../model/register-model";
 
 export class User {
-  static async isEmailExist(request: RegisterRequest) {
+  static async isEmailExist(emailRequest: string) {
     const isEmailExist = await prisma.user.findUnique({
       where: {
-        email: request.email,
+        email: emailRequest,
+      },
+      include: {
+        user_role: {
+          include: {
+            role: true,
+          },
+        },
       },
     });
 

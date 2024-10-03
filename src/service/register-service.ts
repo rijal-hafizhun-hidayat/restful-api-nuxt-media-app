@@ -16,7 +16,7 @@ export class RegisterService {
       request
     );
 
-    const isEmailExist = await User.isEmailExist(requestBody);
+    const isEmailExist = await User.isEmailExist(requestBody.email);
 
     if (isEmailExist) {
       throw new ErrorResponse(404, "email already exist");
