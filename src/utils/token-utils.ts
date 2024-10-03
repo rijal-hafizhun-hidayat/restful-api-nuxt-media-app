@@ -1,7 +1,7 @@
 import type { FormatUser } from "../model/token-model";
 import Jwt from "jsonwebtoken";
 
-export class Token {
+export class TokenUtils {
   static async generate(user: FormatUser) {
     const token = Jwt.sign(
       {

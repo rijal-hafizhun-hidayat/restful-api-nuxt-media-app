@@ -5,7 +5,7 @@ import {
   type RegisterRequest,
   type RegisterResponse,
 } from "../model/register-model";
-import { User } from "../utils/user";
+import { UserUtils } from "../utils/user-utils";
 import { RegisterValidation } from "../validation/register-validation";
 import { Validation } from "../validation/validation";
 
@@ -16,7 +16,7 @@ export class RegisterService {
       request
     );
 
-    const isEmailExist = await User.isEmailExist(requestBody.email);
+    const isEmailExist = await UserUtils.isEmailExist(requestBody.email);
 
     if (isEmailExist) {
       throw new ErrorResponse(404, "email already exist");
