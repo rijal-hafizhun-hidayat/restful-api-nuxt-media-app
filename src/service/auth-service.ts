@@ -1,6 +1,7 @@
 import { prisma } from "../app/database";
 import { ErrorResponse } from "../error/error-response";
 import { toLoginResponse, type LoginRequest } from "../model/auth-model";
+import type { EmailRequest } from "../model/email-model";
 import {
   toResetPasswordResponse,
   toUpdatePasswordResponse,
@@ -10,6 +11,7 @@ import {
 } from "../model/reset-password-model";
 import type { FormatUser } from "../model/token-model";
 import { DateUtils } from "../utils/date-utils";
+import { SendEmailUtils } from "../utils/send-email-utils";
 import { TokenUtils } from "../utils/token-utils";
 import { UserUtils } from "../utils/user-utils";
 import { AuthValidation } from "../validation/auth-validation";
@@ -92,6 +94,15 @@ export class AuthService {
         },
       }),
     ]);
+
+    const dataEmail: EmailRequest = {
+      from: "rijal.1344@gmail.com",
+      to: user.email,
+      subject: "token reset password",
+      text: `Dear ${user.email}, here is the token reset password, ${randomDigit}`,
+    };
+
+    await SendEmailUtils.send(dataEmail);
 
     return toResetPasswordResponse(reset_password);
   }
