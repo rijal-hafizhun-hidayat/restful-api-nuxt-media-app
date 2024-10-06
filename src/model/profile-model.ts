@@ -8,6 +8,11 @@ export interface UpdateEmailRequest {
   email: string;
 }
 
+export interface UpdateProfilePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export function toUpdateNameResponse(user: user): UpdateNameRequest {
   return {
     name: user.name,

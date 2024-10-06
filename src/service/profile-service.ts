@@ -1,3 +1,4 @@
+import type { user } from "@prisma/client";
 import { prisma } from "../app/database";
 import { ErrorResponse } from "../error/error-response";
 import {
@@ -5,6 +6,7 @@ import {
   toUpdateNameResponse,
   type UpdateEmailRequest,
   type UpdateNameRequest,
+  type UpdateProfilePasswordRequest,
 } from "../model/profile-model";
 import { UserUtils } from "../utils/user-utils";
 import { ProfileValidation } from "../validation/profile-validation";
@@ -61,5 +63,43 @@ export class ProfileService {
     ]);
 
     return toUpdateEmailResponse(user);
+  }
+
+  static async updateProfilePassword(
+    request: UpdateProfilePasswordRequest,
+    userId: number
+  ): Promise<user[]> {
+    const requestBody: UpdateProfilePasswordRequest = Validation.validate(
+      ProfileValidation.UpdateProfilePasswordValidation,
+      request
+    );
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    const isMatch = Bun.password.verifySync(
+      requestBody.oldPassword,
+      user!.password
+    );
+
+    if (!isMatch) {
+      throw new ErrorResponse(404, "old password not match");
+    }
+
+    const newPassword = Bun.password.hashSync(requestBody.newPassword);
+
+    return await prisma.$transaction([
+      prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          password: newPassword,
+        },
+      }),
+    ]);
   }
 }
