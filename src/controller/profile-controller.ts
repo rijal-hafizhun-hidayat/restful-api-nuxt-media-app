@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import type {
   UpdateEmailRequest,
   UpdateNameRequest,
+  UpdateProfilePasswordRequest,
 } from "../model/profile-model";
 import { ProfileService } from "../service/profile-service";
 
@@ -68,6 +69,24 @@ export class ProfileController {
         statusCode: 200,
         message: "success update email",
         data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateProfilePassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const request: UpdateProfilePasswordRequest = req.body;
+      const userId: number = (req as any).currentUser.id;
+      await ProfileService.updateProfilePassword(request, userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success update password",
       });
     } catch (error) {
       next(error);

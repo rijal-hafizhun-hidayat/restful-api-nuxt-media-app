@@ -20,5 +20,9 @@ apiRoute.patch(
   "/api/profile/update-email",
   ProfileController.updateProfileEmail
 );
+apiRoute.patch(
+  "/api/profile/update-password",
+  ProfileController.updateProfilePassword
+);
 
 export { apiRoute };
