@@ -23,11 +23,18 @@ export class ProfileController {
     }
   }
 
-  static async verifProfile(req: Request, res: Response, next: NextFunction) {
+  static async verifProfile(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
     try {
+      const userId: number = (req as any).currentUser.id;
+      const result = await ProfileService.verifProfile(userId);
       return res.status(200).json({
         statusCode: 200,
         message: "success verified",
+        data: result,
       });
     } catch (error) {
       next(error);

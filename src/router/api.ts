@@ -24,5 +24,6 @@ apiRoute.patch(
   "/api/profile/update-password",
   ProfileController.updateProfilePassword
 );
+apiRoute.patch("/api/profile/verif", ProfileController.verifProfile);
 
 export { apiRoute };

@@ -4,9 +4,11 @@ import { ErrorResponse } from "../error/error-response";
 import {
   toUpdateEmailResponse,
   toUpdateNameResponse,
+  toUserVerified,
   type UpdateEmailRequest,
   type UpdateNameRequest,
   type UpdateProfilePasswordRequest,
+  type UserVerified,
 } from "../model/profile-model";
 import { UserUtils } from "../utils/user-utils";
 import { ProfileValidation } from "../validation/profile-validation";
@@ -101,5 +103,22 @@ export class ProfileService {
         },
       }),
     ]);
+  }
+
+  static async verifProfile(userId: number): Promise<UserVerified> {
+    const date: Date = new Date();
+
+    const [user] = await prisma.$transaction([
+      prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          email_verified_at: date,
+        },
+      }),
+    ]);
+
+    return toUserVerified(user);
   }
 }
