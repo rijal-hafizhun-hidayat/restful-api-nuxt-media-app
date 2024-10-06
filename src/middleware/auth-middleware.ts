@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import { ErrorResponse } from "../error/error-response";
 import { TokenUtils } from "../utils/token-utils";
+import { prisma } from "../app/database";
+import type { role } from "@prisma/client";
 
 export const authMiddleware = async (
   req: Request,
@@ -23,10 +25,41 @@ export const authMiddleware = async (
 
   try {
     const decoded = await TokenUtils.verifyToken(token);
-    (req as any).currentUser = (decoded as any).data;
-    // return res.status(200).json({
-    //   decoded,
-    // });
+    const userId: number = (decoded as any).userId;
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        user_role: {
+          include: {
+            role: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return res
+        .status(403)
+        .json({
+          statusCode: 403,
+          errors: "token invalid",
+        })
+        .end();
+    }
+
+    const formatUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.user_role.map((role) => role.role),
+    };
+
+    (req as any).currentUser = formatUser;
     return next();
   } catch (error: any) {
     return res

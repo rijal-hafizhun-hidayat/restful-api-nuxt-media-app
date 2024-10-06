@@ -60,4 +60,18 @@ export class AuthController {
       next(error);
     }
   }
+
+  static async getMe(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      return res.status(200).json({
+        data: (req as any).currentUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

@@ -5,23 +5,20 @@ import express, {
 } from "express";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { userMiddleware } from "../middleware/user-middleware";
+import { AuthController } from "../controller/auth-controller";
+import { ProfileController } from "../controller/profile-controller";
 
 const apiRoute = express.Router();
 
 apiRoute.use(authMiddleware);
 apiRoute.use(userMiddleware);
 
-apiRoute.get(
-  "/api/profile",
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    try {
-      return res.status(200).json({
-        data: (req as any).currentUser,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
+apiRoute.get("/api/me", AuthController.getMe);
+apiRoute.get("/api/profile", ProfileController.getProfile);
+apiRoute.patch("/api/profile/update-name", ProfileController.updateProfileName);
+apiRoute.patch(
+  "/api/profile/update-email",
+  ProfileController.updateProfileEmail
 );
 
 export { apiRoute };
