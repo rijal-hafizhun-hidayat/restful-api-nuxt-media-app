@@ -9,7 +9,6 @@ import {
   type ResetPasswordResponse,
   type UpdatePasswordRequest,
 } from "../model/reset-password-model";
-import type { FormatUser } from "../model/token-model";
 import { DateUtils } from "../utils/date-utils";
 import { SendEmailUtils } from "../utils/send-email-utils";
 import { TokenUtils } from "../utils/token-utils";
@@ -39,14 +38,9 @@ export class AuthService {
       throw new ErrorResponse(404, "email or password is not correctF");
     }
 
-    const formatUser: FormatUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.user_role.map((role) => role.role),
-    };
+    const userId: number = user.id;
 
-    const token = await TokenUtils.generate(formatUser);
+    const token = await TokenUtils.generate(userId);
 
     return toLoginResponse(token);
   }

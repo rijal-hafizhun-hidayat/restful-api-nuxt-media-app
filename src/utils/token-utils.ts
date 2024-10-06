@@ -3,10 +3,10 @@ import type { FormatUser } from "../model/token-model";
 import Jwt from "jsonwebtoken";
 
 export class TokenUtils {
-  static async generate(user: FormatUser) {
+  static async generate(userId: number) {
     const token = Jwt.sign(
       {
-        data: user,
+        userId: userId,
       },
       process.env.JWT_KEY as string,
       { expiresIn: "1h" }
