@@ -7,6 +7,7 @@ import { authMiddleware } from "../middleware/auth-middleware";
 import { userMiddleware } from "../middleware/user-middleware";
 import { AuthController } from "../controller/auth-controller";
 import { ProfileController } from "../controller/profile-controller";
+import { PostController } from "../controller/post-controller";
 
 const apiRoute = express.Router();
 
