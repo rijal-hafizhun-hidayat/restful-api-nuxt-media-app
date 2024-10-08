@@ -13,4 +13,8 @@ export class ProfileValidation {
     newPassword: string().min(1).max(100),
     oldPassword: string().min(1).max(100),
   });
+
+  static readonly UpdateProfileBioValidation: ZodType = z.object({
+    bio: string().min(1).max(100),
+  });
 }

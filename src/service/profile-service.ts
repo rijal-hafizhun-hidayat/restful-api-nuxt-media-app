@@ -2,9 +2,11 @@ import type { user } from "@prisma/client";
 import { prisma } from "../app/database";
 import { ErrorResponse } from "../error/error-response";
 import {
+  toUpdateBioResponse,
   toUpdateEmailResponse,
   toUpdateNameResponse,
   toUserVerified,
+  type UpdateBioRequest,
   type UpdateEmailRequest,
   type UpdateNameRequest,
   type UpdateProfilePasswordRequest,
@@ -120,5 +122,28 @@ export class ProfileService {
     ]);
 
     return toUserVerified(user);
+  }
+
+  static async updateProfileBio(
+    request: UpdateBioRequest,
+    userId: number
+  ): Promise<UpdateBioRequest> {
+    const requestBody: UpdateBioRequest = Validation.validate(
+      ProfileValidation.UpdateProfileBioValidation,
+      request
+    );
+
+    const [user] = await prisma.$transaction([
+      prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          bio: requestBody.bio,
+        },
+      }),
+    ]);
+
+    return toUpdateBioResponse(user);
   }
 }

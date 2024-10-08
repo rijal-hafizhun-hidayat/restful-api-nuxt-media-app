@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import type {
+  UpdateBioRequest,
   UpdateEmailRequest,
   UpdateNameRequest,
   UpdateProfilePasswordRequest,
@@ -94,6 +95,25 @@ export class ProfileController {
       return res.status(200).json({
         statusCode: 200,
         message: "success update password",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateProfileBio(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const request: UpdateBioRequest = req.body as UpdateBioRequest;
+      const userId: number = (req as any).currentUser.id;
+      const result = await ProfileService.updateProfileBio(request, userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success update bio",
+        data: result,
       });
     } catch (error) {
       next(error);

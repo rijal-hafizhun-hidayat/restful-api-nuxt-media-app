@@ -8,6 +8,10 @@ export interface UpdateEmailRequest {
   email: string;
 }
 
+export interface UpdateBioRequest {
+  bio: string | null;
+}
+
 export interface UserVerified {
   email_verified_at: Date | null;
 }
@@ -32,5 +36,11 @@ export function toUpdateEmailResponse(user: user): UpdateEmailRequest {
 export function toUserVerified(user: user): UserVerified {
   return {
     email_verified_at: user.email_verified_at,
+  };
+}
+
+export function toUpdateBioResponse(user: user): UpdateBioRequest {
+  return {
+    bio: user.bio,
   };
 }

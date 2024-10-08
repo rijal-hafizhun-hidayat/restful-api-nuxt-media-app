@@ -26,5 +26,6 @@ apiRoute.patch(
   ProfileController.updateProfilePassword
 );
 apiRoute.patch("/api/profile/verif", ProfileController.verifProfile);
+apiRoute.patch("/api/profile/update-bio", ProfileController.updateProfileBio);
 
 export { apiRoute };
