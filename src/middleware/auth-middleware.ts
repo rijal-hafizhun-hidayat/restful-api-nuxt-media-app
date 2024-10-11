@@ -35,6 +35,7 @@ export const authMiddleware = async (
         name: true,
         email: true,
         bio: true,
+        avatar: true,
         user_role: {
           include: {
             role: true,
@@ -58,6 +59,7 @@ export const authMiddleware = async (
       name: user.name,
       email: user.email,
       bio: user.bio,
+      avatar: user.avatar,
       role: user.user_role.map((role) => role.role),
     };
 

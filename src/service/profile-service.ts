@@ -5,16 +5,19 @@ import {
   toUpdateBioResponse,
   toUpdateEmailResponse,
   toUpdateNameResponse,
+  toUpdateProfileVatar,
   toUserVerified,
   type UpdateBioRequest,
   type UpdateEmailRequest,
   type UpdateNameRequest,
+  type UpdateProfileAvatarRequest,
   type UpdateProfilePasswordRequest,
   type UserVerified,
 } from "../model/profile-model";
 import { UserUtils } from "../utils/user-utils";
 import { ProfileValidation } from "../validation/profile-validation";
 import { Validation } from "../validation/validation";
+import { FileUtils } from "../utils/file-utils";
 
 export class ProfileService {
   static async updateProfileName(
@@ -145,5 +148,31 @@ export class ProfileService {
     ]);
 
     return toUpdateBioResponse(user);
+  }
+
+  static async updateProfileAvatar(
+    request: Express.Multer.File,
+    userId: number
+  ): Promise<UpdateProfileAvatarRequest> {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    await FileUtils.destroyFile(`src/storage/profile/${user!.avatar}`);
+
+    const [updateUser] = await prisma.$transaction([
+      prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          avatar: request.filename,
+        },
+      }),
+    ]);
+
+    return toUpdateProfileVatar(updateUser);
   }
 }

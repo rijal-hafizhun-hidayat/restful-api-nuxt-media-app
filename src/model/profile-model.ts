@@ -21,6 +21,10 @@ export interface UpdateProfilePasswordRequest {
   newPassword: string;
 }
 
+export interface UpdateProfileAvatarRequest {
+  avatar: string | null;
+}
+
 export function toUpdateNameResponse(user: user): UpdateNameRequest {
   return {
     name: user.name,
@@ -42,5 +46,11 @@ export function toUserVerified(user: user): UserVerified {
 export function toUpdateBioResponse(user: user): UpdateBioRequest {
   return {
     bio: user.bio,
+  };
+}
+
+export function toUpdateProfileVatar(user: user): UpdateProfileAvatarRequest {
+  return {
+    avatar: user.avatar,
   };
 }
