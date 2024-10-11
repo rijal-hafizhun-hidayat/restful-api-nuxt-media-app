@@ -119,4 +119,23 @@ export class ProfileController {
       next(error);
     }
   }
+
+  static async updateProfileAvatar(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const file = req.file as Express.Multer.File;
+      const userId: number = (req as any).currentUser.id;
+      const result = await ProfileService.updateProfileAvatar(file, userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success update avatar",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
