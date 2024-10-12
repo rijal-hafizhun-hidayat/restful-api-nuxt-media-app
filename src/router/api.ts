@@ -1,13 +1,8 @@
-import express, {
-  type NextFunction,
-  type Request,
-  type Response,
-} from "express";
+import express from "express";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { userMiddleware } from "../middleware/user-middleware";
 import { AuthController } from "../controller/auth-controller";
 import { ProfileController } from "../controller/profile-controller";
-import { PostController } from "../controller/post-controller";
 import { uploadProfile } from "../upload/upload-profile";
 
 const apiRoute = express.Router();
