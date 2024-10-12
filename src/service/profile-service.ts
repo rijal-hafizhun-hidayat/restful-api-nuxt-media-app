@@ -7,12 +7,7 @@ import {
   toUpdateNameResponse,
   toUpdateProfileVatar,
   toUserVerified,
-  type UpdateBioRequest,
-  type UpdateEmailRequest,
-  type UpdateNameRequest,
-  type UpdateProfileAvatarRequest,
-  type UpdateProfilePasswordRequest,
-  type UserVerified,
+  type ProfileRequest,
 } from "../model/profile-model";
 import { UserUtils } from "../utils/user-utils";
 import { ProfileValidation } from "../validation/profile-validation";
@@ -21,10 +16,10 @@ import { FileUtils } from "../utils/file-utils";
 
 export class ProfileService {
   static async updateProfileName(
-    request: UpdateNameRequest,
+    request: ProfileRequest,
     userId: number
-  ): Promise<UpdateNameRequest> {
-    const requestBody: UpdateNameRequest = Validation.validate(
+  ): Promise<ProfileRequest> {
+    const requestBody: ProfileRequest = Validation.validate(
       ProfileValidation.UpdateProfileNameValidation,
       request
     );
@@ -44,15 +39,17 @@ export class ProfileService {
   }
 
   static async updateProfileEmail(
-    request: UpdateEmailRequest,
+    request: ProfileRequest,
     userId: number
-  ): Promise<UpdateEmailRequest> {
-    const requestBody: UpdateEmailRequest = Validation.validate(
+  ): Promise<ProfileRequest> {
+    const requestBody: ProfileRequest = Validation.validate(
       ProfileValidation.UpdateProfileEmailValidation,
       request
     );
 
-    const isEmailAlreadyExist = await UserUtils.isEmailExist(requestBody.email);
+    const isEmailAlreadyExist = await UserUtils.isEmailExist(
+      requestBody.email!
+    );
 
     if (isEmailAlreadyExist) {
       throw new ErrorResponse(404, "email already exist");
@@ -73,10 +70,10 @@ export class ProfileService {
   }
 
   static async updateProfilePassword(
-    request: UpdateProfilePasswordRequest,
+    request: ProfileRequest,
     userId: number
   ): Promise<user[]> {
-    const requestBody: UpdateProfilePasswordRequest = Validation.validate(
+    const requestBody: ProfileRequest = Validation.validate(
       ProfileValidation.UpdateProfilePasswordValidation,
       request
     );
@@ -88,7 +85,7 @@ export class ProfileService {
     });
 
     const isMatch = Bun.password.verifySync(
-      requestBody.oldPassword,
+      requestBody.oldPassword!,
       user!.password
     );
 
@@ -96,7 +93,7 @@ export class ProfileService {
       throw new ErrorResponse(404, "old password not match");
     }
 
-    const newPassword = Bun.password.hashSync(requestBody.newPassword);
+    const newPassword = Bun.password.hashSync(requestBody.newPassword!);
 
     return await prisma.$transaction([
       prisma.user.update({
@@ -110,7 +107,7 @@ export class ProfileService {
     ]);
   }
 
-  static async verifProfile(userId: number): Promise<UserVerified> {
+  static async verifProfile(userId: number): Promise<ProfileRequest> {
     const date: Date = new Date();
 
     const [user] = await prisma.$transaction([
@@ -128,10 +125,10 @@ export class ProfileService {
   }
 
   static async updateProfileBio(
-    request: UpdateBioRequest,
+    request: ProfileRequest,
     userId: number
-  ): Promise<UpdateBioRequest> {
-    const requestBody: UpdateBioRequest = Validation.validate(
+  ): Promise<ProfileRequest> {
+    const requestBody: ProfileRequest = Validation.validate(
       ProfileValidation.UpdateProfileBioValidation,
       request
     );
@@ -153,7 +150,7 @@ export class ProfileService {
   static async updateProfileAvatar(
     request: Express.Multer.File,
     userId: number
-  ): Promise<UpdateProfileAvatarRequest> {
+  ): Promise<ProfileRequest> {
     if (!request) {
       throw new ErrorResponse(400, "upload file not found");
     }
