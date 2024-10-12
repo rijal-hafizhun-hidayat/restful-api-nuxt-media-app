@@ -1,10 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type {
-  UpdateBioRequest,
-  UpdateEmailRequest,
-  UpdateNameRequest,
-  UpdateProfilePasswordRequest,
-} from "../model/profile-model";
+import type { ProfileRequest } from "../model/profile-model";
 import { ProfileService } from "../service/profile-service";
 
 export class ProfileController {
@@ -48,9 +43,9 @@ export class ProfileController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateNameRequest = req.body as UpdateNameRequest;
+      const request: ProfileRequest = req.body as ProfileRequest;
       const userId: number = (req as any).currentUser.id;
-      const result: UpdateNameRequest = await ProfileService.updateProfileName(
+      const result: ProfileRequest = await ProfileService.updateProfileName(
         request,
         userId
       );
@@ -70,7 +65,7 @@ export class ProfileController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateEmailRequest = req.body as UpdateEmailRequest;
+      const request: ProfileRequest = req.body as ProfileRequest;
       const userId: number = (req as any).currentUser.id;
       const result = await ProfileService.updateProfileEmail(request, userId);
       return res.status(200).json({
@@ -89,7 +84,7 @@ export class ProfileController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateProfilePasswordRequest = req.body;
+      const request: ProfileRequest = req.body as ProfileRequest;
       const userId: number = (req as any).currentUser.id;
       await ProfileService.updateProfilePassword(request, userId);
       return res.status(200).json({
@@ -107,7 +102,7 @@ export class ProfileController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateBioRequest = req.body as UpdateBioRequest;
+      const request: ProfileRequest = req.body as ProfileRequest;
       const userId: number = (req as any).currentUser.id;
       const result = await ProfileService.updateProfileBio(request, userId);
       return res.status(200).json({
