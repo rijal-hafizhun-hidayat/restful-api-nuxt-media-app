@@ -59,7 +59,7 @@ export const authMiddleware = async (
       name: user.name,
       email: user.email,
       bio: user.bio,
-      avatar: user.avatar,
+      avatar: (Bun.env.BASE_URL as string) + "/storage/profile/" + user.avatar,
       role: user.user_role.map((role) => role.role),
     };
 

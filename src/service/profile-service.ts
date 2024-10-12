@@ -154,6 +154,10 @@ export class ProfileService {
     request: Express.Multer.File,
     userId: number
   ): Promise<UpdateProfileAvatarRequest> {
+    if (!request) {
+      throw new ErrorResponse(400, "upload file not found");
+    }
+
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
