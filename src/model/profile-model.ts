@@ -9,30 +9,6 @@ export interface ProfileRequest {
   newPassword?: string;
   avatar?: string | null;
 }
-// export interface UpdateNameRequest {
-//   name: string;
-// }
-
-// export interface UpdateEmailRequest {
-//   email: string;
-// }
-
-// export interface UpdateBioRequest {
-//   bio: string | null;
-// }
-
-// export interface UserVerified {
-//   email_verified_at: Date | null;
-// }
-
-// export interface UpdateProfilePasswordRequest {
-//   oldPassword: string;
-//   newPassword: string;
-// }
-
-// export interface UpdateProfileAvatarRequest {
-//   avatar: string | null;
-// }
 
 export function toUpdateNameResponse(user: user): ProfileRequest {
   return {

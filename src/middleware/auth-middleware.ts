@@ -1,8 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { ErrorResponse } from "../error/error-response";
 import { TokenUtils } from "../utils/token-utils";
 import { prisma } from "../app/database";
-import type { role } from "@prisma/client";
 
 export const authMiddleware = async (
   req: Request,

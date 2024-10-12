@@ -9,8 +9,7 @@ export class PostController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const userId: number = (req as any).currentUser.id;
-      const result = await PostService.getAllByUserId(userId);
+      const result = await PostService.getAll();
       return res.status(200).json({
         data: result,
       });
