@@ -1,10 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import type { ProfileRequest } from "../model/profile-model";
 import { ProfileService } from "../service/profile-service";
+import type { CostumeRequest } from "../interface/request-interface";
 
 export class ProfileController {
   static async getProfile(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
@@ -12,7 +13,7 @@ export class ProfileController {
       return res.status(200).json({
         statusCode: 200,
         message: "success",
-        data: (req as any).currentUser,
+        data: req.currentUser,
       });
     } catch (error) {
       next(error);
@@ -20,12 +21,12 @@ export class ProfileController {
   }
 
   static async verifProfile(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.verifProfile(userId);
       return res.status(200).json({
         statusCode: 200,
@@ -38,13 +39,13 @@ export class ProfileController {
   }
 
   static async updateProfileName(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       const request: ProfileRequest = req.body as ProfileRequest;
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result: ProfileRequest = await ProfileService.updateProfileName(
         request,
         userId
@@ -60,13 +61,13 @@ export class ProfileController {
   }
 
   static async updateProfileEmail(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       const request: ProfileRequest = req.body as ProfileRequest;
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.updateProfileEmail(request, userId);
       return res.status(200).json({
         statusCode: 200,
@@ -79,13 +80,13 @@ export class ProfileController {
   }
 
   static async updateProfilePassword(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       const request: ProfileRequest = req.body as ProfileRequest;
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       await ProfileService.updateProfilePassword(request, userId);
       return res.status(200).json({
         statusCode: 200,
@@ -97,13 +98,13 @@ export class ProfileController {
   }
 
   static async updateProfileBio(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       const request: ProfileRequest = req.body as ProfileRequest;
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.updateProfileBio(request, userId);
       return res.status(200).json({
         statusCode: 200,
@@ -116,13 +117,13 @@ export class ProfileController {
   }
 
   static async updateProfileAvatar(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       const file = req.file as Express.Multer.File;
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.updateProfileAvatar(file, userId);
       return res.status(200).json({
         statusCode: 200,
@@ -135,12 +136,12 @@ export class ProfileController {
   }
 
   static async getAllPostByUserId(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.getAllPostByUserId(userId);
       return res.status(200).json({
         statusCode: 200,
