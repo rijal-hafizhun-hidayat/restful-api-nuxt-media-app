@@ -34,7 +34,7 @@ export function toUpdateBioResponse(user: user): ProfileRequest {
   };
 }
 
-export function toUpdateProfileVatar(user: user): ProfileRequest {
+export function toUpdateProfileAvatar(user: user): ProfileRequest {
   return {
     avatar: user.avatar,
   };
