@@ -11,6 +11,8 @@ export class PostController {
     try {
       const result = await PostService.getAll();
       return res.status(200).json({
+        statusCode: 200,
+        message: "success get post",
         data: result,
       });
     } catch (error) {
