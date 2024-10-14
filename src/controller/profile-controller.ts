@@ -133,4 +133,22 @@ export class ProfileController {
       next(error);
     }
   }
+
+  static async getAllPostByUserId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const userId: number = (req as any).currentUser.id;
+      const result = await ProfileService.getAllPostByUserId(userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success get profile active post",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

@@ -13,6 +13,7 @@ import { UserUtils } from "../utils/user-utils";
 import { ProfileValidation } from "../validation/profile-validation";
 import { Validation } from "../validation/validation";
 import { FileUtils } from "../utils/file-utils";
+import { toPostResponseArray, type PostResponse } from "../model/post-model";
 
 export class ProfileService {
   static async updateProfileName(
@@ -175,5 +176,23 @@ export class ProfileService {
     ]);
 
     return toUpdateProfileVatar(updateUser);
+  }
+
+  static async getAllPostByUserId(userId: number): Promise<PostResponse[]> {
+    const posts = await prisma.post.findMany({
+      where: {
+        user_id: userId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return toPostResponseArray(posts);
   }
 }
