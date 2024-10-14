@@ -5,7 +5,7 @@ import {
   toUpdateBioResponse,
   toUpdateEmailResponse,
   toUpdateNameResponse,
-  toUpdateProfileVatar,
+  toUpdateProfileAvatar,
   toUserVerified,
   type ProfileRequest,
 } from "../model/profile-model";
@@ -175,7 +175,7 @@ export class ProfileService {
       }),
     ]);
 
-    return toUpdateProfileVatar(updateUser);
+    return toUpdateProfileAvatar(updateUser);
   }
 
   static async getAllPostByUserId(userId: number): Promise<PostResponse[]> {
