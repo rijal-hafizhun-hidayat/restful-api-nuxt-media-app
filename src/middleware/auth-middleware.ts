@@ -1,9 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import { TokenUtils } from "../utils/token-utils";
 import { prisma } from "../app/database";
+import type { CostumeRequest } from "../interface/request-interface";
 
 export const authMiddleware = async (
-  req: Request,
+  req: CostumeRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
@@ -57,22 +58,27 @@ export const authMiddleware = async (
       name: user.name,
       email: user.email,
       bio: user.bio,
-      avatar:
-        user.avatar === null
-          ? null
-          : (Bun.env.BASE_URL as string) + "/storage/profile/" + user.avatar,
+      avatar: user.avatar
+        ? `${process.env.BASE_URL}/storage/profile/${user.avatar}`
+        : null,
       role: user.user_role.map((role) => role.role),
     };
 
-    (req as any).currentUser = formatUser;
+    req.currentUser = formatUser;
     return next();
   } catch (error: any) {
-    console.log(error);
+    let errorMessage = "Token invalid";
+    if (error.name === "TokenExpiredError") {
+      errorMessage = "Token expired";
+    } else if (error.name === "JsonWebTokenError") {
+      errorMessage = "Token malformed";
+    }
+
     return res
       .status(403)
       .json({
         statusCode: 403,
-        errors: error.message,
+        errors: errorMessage,
       })
       .end();
   }
