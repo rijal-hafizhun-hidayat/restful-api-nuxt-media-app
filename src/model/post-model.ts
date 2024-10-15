@@ -1,5 +1,6 @@
-import type { post } from "@prisma/client";
+import type { post, post_like } from "@prisma/client";
 import type { UserResponse } from "./user-model";
+import type { PostLikeResponse } from "./post-like-model";
 
 export interface PostResponse {
   id: number;
@@ -8,6 +9,7 @@ export interface PostResponse {
   created_at: Date;
   updated_at: Date;
   user?: UserResponse;
+  is_liked?: boolean;
 }
 
 export interface PostRequest {
@@ -15,7 +17,9 @@ export interface PostRequest {
 }
 
 export function toPostResponseArray(
-  posts: (post & { user: UserResponse })[]
+  posts: (post & { user: UserResponse } & {
+    post_like: PostLikeResponse[];
+  })[]
 ): PostResponse[] {
   return posts.map((post) => ({
     id: post.id,
@@ -27,6 +31,7 @@ export function toPostResponseArray(
       id: post.user.id,
       name: post.user.name,
     },
+    is_liked: post.post_like.length! > 0,
   }));
 }
 

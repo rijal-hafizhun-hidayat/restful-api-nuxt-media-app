@@ -190,6 +190,11 @@ export class ProfileService {
             name: true,
           },
         },
+        post_like: {
+          where: {
+            user_id: userId,
+          },
+        },
       },
     });
 

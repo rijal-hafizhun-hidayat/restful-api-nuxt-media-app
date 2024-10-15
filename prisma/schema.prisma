@@ -26,6 +26,7 @@ model user {
   user_role         user_role[]
   reset_password    reset_password[]
   post              post[]
+  post_like         post_like[]
 }
 
 model role {
@@ -64,5 +65,17 @@ model post {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  user      user        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  post_like post_like[]
+}
+
+model post_like {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  post_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  post post @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
