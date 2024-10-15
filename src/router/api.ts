@@ -5,6 +5,7 @@ import { AuthController } from "../controller/auth-controller";
 import { ProfileController } from "../controller/profile-controller";
 import { uploadProfile } from "../upload/upload-profile";
 import { PostController } from "../controller/post-controller";
+import { PostLikeController } from "../controller/post-like-controller";
 
 const apiRoute = express.Router();
 
@@ -36,6 +37,8 @@ apiRoute.get("/api/profile/post", ProfileController.getAllPostByUserId);
 //start api post
 apiRoute.get("/api/post", PostController.getAllByUserId);
 apiRoute.post("/api/post", PostController.storePostByUserId);
+apiRoute.post("/api/post/:postId/like", PostLikeController.storePostLike);
+apiRoute.delete("/api/post/:postId/unlike", PostLikeController.destroyPostLike);
 //end api post
 
 export { apiRoute };

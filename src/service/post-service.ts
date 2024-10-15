@@ -9,13 +9,21 @@ import { PostValidation } from "../validation/post-validation";
 import { Validation } from "../validation/validation";
 
 export class PostService {
-  static async getAll(): Promise<PostResponse[]> {
+  static async getAll(userId: number): Promise<PostResponse[]> {
     const posts = await prisma.post.findMany({
       include: {
         user: {
           select: {
             id: true,
             name: true,
+          },
+        },
+        post_like: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            id: true,
           },
         },
       },

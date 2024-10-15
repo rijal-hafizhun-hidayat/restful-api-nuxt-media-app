@@ -1,20 +1,20 @@
-import type { NextFunction, Request, Response } from "express";
-import { PostService } from "../service/post-service";
-import type { PostRequest } from "../model/post-model";
+import type { NextFunction, Response } from "express";
 import type { CostumeRequest } from "../interface/request-interface";
+import { PostLikeService } from "../service/post-like-service";
 
-export class PostController {
-  static async getAllByUserId(
+export class PostLikeController {
+  static async storePostLike(
     req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
+      const postId: number = parseInt(req.params.postId);
       const userId: number = req.currentUser!.id;
-      const result = await PostService.getAll(userId);
+      const result = await PostLikeService.storePostLike(postId, userId);
       return res.status(200).json({
         statusCode: 200,
-        message: "success get post",
+        message: "success store post like",
         data: result,
       });
     } catch (error) {
@@ -22,18 +22,18 @@ export class PostController {
     }
   }
 
-  static async storePostByUserId(
+  static async destroyPostLike(
     req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: PostRequest = req.body as PostRequest;
+      const postId: number = parseInt(req.params.postId);
       const userId: number = req.currentUser!.id;
-      const result = await PostService.storePostByUserId(request, userId);
+      const result = await PostLikeService.destroyPostLike(postId, userId);
       return res.status(200).json({
         statusCode: 200,
-        message: "success create post",
+        message: "success destroy post like",
         data: result,
       });
     } catch (error) {
