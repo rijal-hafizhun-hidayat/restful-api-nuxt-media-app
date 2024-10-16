@@ -12,8 +12,26 @@ export class ProfileController {
     try {
       return res.status(200).json({
         statusCode: 200,
-        message: "success",
+        message: "success get profile",
         data: req.currentUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getProfileByUserId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const userId: number = parseInt(req.params.userId);
+      const result = await ProfileService.getProfileByUserId(userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success get profile",
+        data: result,
       });
     } catch (error) {
       next(error);
