@@ -2,6 +2,7 @@ import type { user } from "@prisma/client";
 import { prisma } from "../app/database";
 import { ErrorResponse } from "../error/error-response";
 import {
+  toProfileResponse,
   toUpdateBioResponse,
   toUpdateEmailResponse,
   toUpdateNameResponse,
@@ -204,5 +205,19 @@ export class ProfileService {
     });
 
     return toPostResponseArray(posts);
+  }
+
+  static async getProfileByUserId(userId: number): Promise<ProfileRequest> {
+    const profile = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!profile) {
+      throw new ErrorResponse(404, "profile not found");
+    }
+
+    return toProfileResponse(profile);
   }
 }

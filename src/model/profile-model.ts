@@ -1,6 +1,7 @@
 import type { user } from "@prisma/client";
 
 export interface ProfileRequest {
+  id?: number;
   name?: string;
   email?: string;
   bio?: string | null;
@@ -37,5 +38,16 @@ export function toUpdateBioResponse(user: user): ProfileRequest {
 export function toUpdateProfileAvatar(user: user): ProfileRequest {
   return {
     avatar: user.avatar,
+  };
+}
+
+export function toProfileResponse(profile: user): ProfileRequest {
+  return {
+    id: profile.id,
+    name: profile.name,
+    bio: profile.bio ?? null,
+    avatar: profile.avatar
+      ? `${process.env.BASE_URL}/storage/profile/${profile.avatar}`
+      : null,
   };
 }

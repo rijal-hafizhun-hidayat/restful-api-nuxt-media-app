@@ -32,6 +32,7 @@ apiRoute.patch(
   ProfileController.updateProfileAvatar
 );
 apiRoute.get("/api/profile/post", ProfileController.getAllPostByUserId);
+apiRoute.get("/api/profile/:userId", ProfileController.getProfileByUserId);
 //end api profile
 
 //start api post
