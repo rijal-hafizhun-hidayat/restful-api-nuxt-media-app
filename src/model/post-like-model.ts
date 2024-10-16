@@ -9,6 +9,10 @@ export interface PostLikeResponse {
   length?: number;
 }
 
+export interface CountPostLikeResponse {
+  post_like: number;
+}
+
 export function toPostLikeResponse(post_likes: post_like): PostLikeResponse {
   return {
     id: post_likes.id,
