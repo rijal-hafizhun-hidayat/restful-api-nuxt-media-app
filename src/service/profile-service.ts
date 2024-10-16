@@ -179,7 +179,9 @@ export class ProfileService {
     return toUpdateProfileAvatar(updateUser);
   }
 
-  static async getAllPostByUserId(userId: number): Promise<PostResponse[]> {
+  static async getAllPostByCurrentUser(
+    userId: number
+  ): Promise<PostResponse[]> {
     const posts = await prisma.post.findMany({
       where: {
         user_id: userId,
@@ -219,5 +221,33 @@ export class ProfileService {
     }
 
     return toProfileResponse(profile);
+  }
+
+  static async getAllPostByUserId(userId: number): Promise<PostResponse[]> {
+    const posts = await prisma.post.findMany({
+      where: {
+        user_id: userId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        post_like: {
+          where: {
+            user_id: userId,
+          },
+        },
+        _count: {
+          select: {
+            post_like: true,
+          },
+        },
+      },
+    });
+
+    return toPostResponseArray(posts);
   }
 }

@@ -153,17 +153,35 @@ export class ProfileController {
     }
   }
 
-  static async getAllPostByUserId(
+  static async getAllPostByCurrentUser(
     req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       const userId: number = req.currentUser!.id;
-      const result = await ProfileService.getAllPostByUserId(userId);
+      const result = await ProfileService.getAllPostByCurrentUser(userId);
       return res.status(200).json({
         statusCode: 200,
         message: "success get profile active post",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getAllPostByUserId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const userId: number = parseInt(req.params.userId);
+      const result = await ProfileService.getAllPostByUserId(userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success get profile post",
         data: result,
       });
     } catch (error) {
