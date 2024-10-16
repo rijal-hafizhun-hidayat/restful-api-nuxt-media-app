@@ -195,6 +195,11 @@ export class ProfileService {
             user_id: userId,
           },
         },
+        _count: {
+          select: {
+            post_like: true,
+          },
+        },
       },
     });
 

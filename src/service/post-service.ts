@@ -26,8 +26,15 @@ export class PostService {
             id: true,
           },
         },
+        _count: {
+          select: {
+            post_like: true,
+          },
+        },
       },
     });
+
+    //return posts;
 
     return toPostResponseArray(posts);
   }
