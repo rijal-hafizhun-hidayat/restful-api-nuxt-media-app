@@ -1,9 +1,6 @@
 import type { post } from "@prisma/client";
 import type { UserResponse } from "./user-model";
-import type {
-  CountPostLikeResponse,
-  PostLikeResponse,
-} from "./post-like-model";
+import type { PostLikeResponse } from "./post-like-model";
 
 export interface PostResponse {
   id: number;
@@ -14,7 +11,10 @@ export interface PostResponse {
   like_count?: number;
   user?: UserResponse;
   is_liked?: boolean;
-  _count?: CountPostLikeResponse;
+  _count?: {
+    post_like: number;
+    post_comment: number;
+  };
 }
 
 export interface PostRequest {
@@ -37,7 +37,8 @@ export function toPostResponseArray(
       name: post.user.name,
     },
     is_liked_user: post.post_like.length > 0,
-    post_like_count: post._count!.post_like,
+    post_like_count: post._count?.post_like,
+    post_comment_count: post._count?.post_comment,
   }));
 }
 
