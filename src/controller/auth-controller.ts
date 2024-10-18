@@ -14,7 +14,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       const request: LoginRequest = req.body as LoginRequest;
-      const result: any = await AuthService.login(request);
+      const result: any = await AuthService.login(request, res);
       return res.status(200).json({
         statusCode: 200,
         message: "success login",

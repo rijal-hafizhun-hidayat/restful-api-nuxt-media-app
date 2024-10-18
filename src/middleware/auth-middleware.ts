@@ -8,9 +8,10 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  const authHeader = req.headers.authorization;
+  const authToken = req.headers.authorization;
+  // const authToken = req.cookies.token;
 
-  if (!authHeader) {
+  if (!authToken) {
     return res
       .status(403)
       .json({
@@ -20,7 +21,7 @@ export const authMiddleware = async (
       .end();
   }
 
-  const [, token] = authHeader.split(" ");
+  const [, token] = authToken.split(" ");
 
   try {
     const decoded = await TokenUtils.verifyToken(token);

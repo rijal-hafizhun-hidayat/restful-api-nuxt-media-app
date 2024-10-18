@@ -1,3 +1,4 @@
+import type { Response } from "express";
 import { prisma } from "../app/database";
 import { ErrorResponse } from "../error/error-response";
 import {
@@ -19,9 +20,13 @@ import { TokenUtils } from "../utils/token-utils";
 import { UserUtils } from "../utils/user-utils";
 import { AuthValidation } from "../validation/auth-validation";
 import { Validation } from "../validation/validation";
+// import { CookiesUtils } from "../utils/cookies-utils";
 
 export class AuthService {
-  static async login(request: LoginRequest): Promise<LoginResponse> {
+  static async login(
+    request: LoginRequest,
+    res: Response
+  ): Promise<LoginResponse> {
     const requestBody: LoginRequest = Validation.validate(
       AuthValidation.loginValidation,
       request
@@ -45,6 +50,7 @@ export class AuthService {
     const userId: number = user.id;
 
     const token = await TokenUtils.generate(userId);
+    //CookiesUtils.setCookie(res, token);
 
     return toLoginResponse(user.name, token);
   }
