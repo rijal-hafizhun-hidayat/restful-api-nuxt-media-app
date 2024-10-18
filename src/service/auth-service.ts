@@ -20,7 +20,7 @@ import { TokenUtils } from "../utils/token-utils";
 import { UserUtils } from "../utils/user-utils";
 import { AuthValidation } from "../validation/auth-validation";
 import { Validation } from "../validation/validation";
-import { CookiesUtils } from "../utils/cookies-utils";
+// import { CookiesUtils } from "../utils/cookies-utils";
 
 export class AuthService {
   static async login(
@@ -50,7 +50,7 @@ export class AuthService {
     const userId: number = user.id;
 
     const token = await TokenUtils.generate(userId);
-    CookiesUtils.setCookie(res, token);
+    //CookiesUtils.setCookie(res, token);
 
     return toLoginResponse(user.name, token);
   }

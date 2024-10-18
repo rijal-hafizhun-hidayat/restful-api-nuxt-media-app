@@ -4,7 +4,7 @@ import { publicApi } from "../router/public-api";
 import { errorMiddleware } from "../middleware/error-middleware";
 import { apiRoute } from "../router/api";
 import { storageRoute } from "../router/storage-api";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 
 const web = express();
 const corsOrigin = {
@@ -12,7 +12,7 @@ const corsOrigin = {
   credentials: true,
   optionSuccessStatus: 200,
 };
-web.use(cookieParser());
+// web.use(cookieParser());
 web.use(cors(corsOrigin));
 web.use(express.json());
 web.use(storageRoute);

@@ -8,8 +8,8 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  // const authHeader = req.headers.authorization;
-  const authToken = req.cookies.token;
+  const authToken = req.headers.authorization;
+  // const authToken = req.cookies.token;
 
   if (!authToken) {
     return res
@@ -21,10 +21,10 @@ export const authMiddleware = async (
       .end();
   }
 
-  // const [, token] = authToken.split(" ");
+  const [, token] = authToken.split(" ");
 
   try {
-    const decoded = await TokenUtils.verifyToken(authToken);
+    const decoded = await TokenUtils.verifyToken(token);
     const userId: number = (decoded as any).userId;
     const user = await prisma.user.findUnique({
       where: {
