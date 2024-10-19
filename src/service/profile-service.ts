@@ -201,6 +201,7 @@ export class ProfileService {
         _count: {
           select: {
             post_like: true,
+            post_comment: true,
           },
         },
       },
@@ -243,6 +244,7 @@ export class ProfileService {
         _count: {
           select: {
             post_like: true,
+            post_comment: true,
           },
         },
       },
