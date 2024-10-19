@@ -13,21 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TypeNotification {
+  POST
+  COMMENT
+}
+
 model user {
-  id                Int              @id @default(autoincrement())
-  name              String           @db.VarChar(255)
-  email             String           @unique @db.VarChar(255)
-  password          String           @db.VarChar(255)
-  avatar            String?          @db.VarChar(255)
-  bio               String?          @db.Text
-  created_at        DateTime         @default(now())
-  updated_at        DateTime         @updatedAt
-  email_verified_at DateTime?
-  user_role         user_role[]
-  reset_password    reset_password[]
-  post              post[]
-  post_like         post_like[]
-  post_comment      post_comment[]
+  id                    Int              @id @default(autoincrement())
+  name                  String           @db.VarChar(255)
+  email                 String           @unique @db.VarChar(255)
+  password              String           @db.VarChar(255)
+  avatar                String?          @db.VarChar(255)
+  bio                   String?          @db.Text
+  created_at            DateTime         @default(now())
+  updated_at            DateTime         @updatedAt
+  email_verified_at     DateTime?
+  user_role             user_role[]
+  reset_password        reset_password[]
+  post                  post[]
+  post_like             post_like[]
+  post_comment          post_comment[]
+  notification_sent     notification[]   @relation("from_user")
+  notification_received notification[]   @relation("to_user")
 }
 
 model role {
@@ -92,4 +99,19 @@ model post_comment {
 
   user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   post post @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model notification {
+  id                   Int              @id @default(autoincrement())
+  from_user_id         Int
+  to_user_id           Int
+  type_notification_id Int
+  message              String           @db.VarChar(255)
+  is_read              Boolean
+  type_notification    TypeNotification
+  created_at           DateTime         @default(now())
+  updated_at           DateTime         @updatedAt
+
+  from_user user @relation("from_user", fields: [from_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  to_user   user @relation("to_user", fields: [to_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
