@@ -59,6 +59,10 @@ apiRoute.get(
   NotificationController.getAllNotificationByToUserId
 );
 apiRoute.post("/api/notification", NotificationController.storeNotification);
+apiRoute.patch(
+  "/api/notification/:notificationId/is_read",
+  NotificationController.updateNotificationIsRead
+);
 //end api notification
 
 export { apiRoute };
