@@ -14,8 +14,8 @@ datasource db {
 }
 
 enum TypeNotification {
-  POST
-  COMMENT
+  LIKE_POST
+  COMMENT_POST
 }
 
 model user {

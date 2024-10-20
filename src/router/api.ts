@@ -7,6 +7,7 @@ import { uploadProfile } from "../upload/upload-profile";
 import { PostController } from "../controller/post-controller";
 import { PostLikeController } from "../controller/post-like-controller";
 import { PostCommentController } from "../controller/post-comment-controller";
+import { NotificationController } from "../controller/notification-controller";
 
 const apiRoute = express.Router();
 
@@ -51,5 +52,13 @@ apiRoute.post(
   PostCommentController.storePostCommentByPostId
 );
 //end api post
+
+//start api notification
+apiRoute.get(
+  "/api/notification",
+  NotificationController.getAllNotificationByToUserId
+);
+apiRoute.post("/api/notification", NotificationController.storeNotification);
+//end api notification
 
 export { apiRoute };
