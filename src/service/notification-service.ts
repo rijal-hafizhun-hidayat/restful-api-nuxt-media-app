@@ -79,4 +79,21 @@ export class NotificationService {
 
     return toNotificationResponse(notification);
   }
+
+  static async updateNotificationIsRead(
+    notificationId: number
+  ): Promise<NotificationResponse> {
+    const [notification] = await prisma.$transaction([
+      prisma.notification.update({
+        where: {
+          id: notificationId,
+        },
+        data: {
+          is_read: true,
+        },
+      }),
+    ]);
+
+    return toNotificationResponse(notification);
+  }
 }
