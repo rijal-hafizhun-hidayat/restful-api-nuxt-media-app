@@ -5,6 +5,7 @@ import type {
   ResetPasswordRequest,
   UpdatePasswordRequest,
 } from "../model/reset-password-model";
+import type { CostumeRequest } from "../interface/request-interface";
 
 export class AuthController {
   static async login(
@@ -14,7 +15,7 @@ export class AuthController {
   ): Promise<any> {
     try {
       const request: LoginRequest = req.body as LoginRequest;
-      const result: any = await AuthService.login(request, res);
+      const result: any = await AuthService.login(request);
       return res.status(200).json({
         statusCode: 200,
         message: "success login",
@@ -62,13 +63,13 @@ export class AuthController {
   }
 
   static async getMe(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       return res.status(200).json({
-        data: (req as any).currentUser,
+        data: req.currentUser,
       });
     } catch (error) {
       next(error);

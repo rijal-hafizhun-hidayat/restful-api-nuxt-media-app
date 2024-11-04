@@ -27,6 +27,7 @@ model user {
   bio                   String?          @db.Text
   created_at            DateTime         @default(now())
   updated_at            DateTime         @updatedAt
+  is_active             Boolean?
   email_verified_at     DateTime?
   user_role             user_role[]
   reset_password        reset_password[]

@@ -163,7 +163,11 @@ export class ProfileService {
       },
     });
 
-    await FileUtils.destroyFile(`src/storage/profile/${user!.avatar}`);
+    if (!user) {
+      throw new ErrorResponse(404, "user not found");
+    }
+
+    await FileUtils.destroyFile(`src/storage/profile/${user.avatar}`);
 
     const [updateUser] = await prisma.$transaction([
       prisma.user.update({
