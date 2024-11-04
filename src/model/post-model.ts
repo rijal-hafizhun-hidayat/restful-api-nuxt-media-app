@@ -11,10 +11,13 @@ export interface PostResponse {
   like_count?: number;
   user?: UserResponse;
   is_liked?: boolean;
-  _count?: {
-    post_like: number;
-    post_comment: number;
-  };
+  post_like_count?: number;
+  post_comment_count?: number;
+}
+
+export interface PostCount {
+  post_like: number;
+  post_comment: number;
 }
 
 export interface PostRequest {
@@ -24,7 +27,7 @@ export interface PostRequest {
 export function toPostResponseArray(
   posts: (PostResponse & { user: UserResponse } & {
     post_like: PostLikeResponse[];
-  })[]
+  } & { _count: PostCount })[]
 ): PostResponse[] {
   return posts.map((post) => ({
     id: post.id,

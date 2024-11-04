@@ -28,6 +28,7 @@ export class RegisterService {
           name: requestBody.name,
           email: requestBody.email,
           password: Bun.password.hashSync(requestBody.password),
+          is_active: true,
         },
       }),
     ]);

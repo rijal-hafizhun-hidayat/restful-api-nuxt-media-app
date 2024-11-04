@@ -1,10 +1,11 @@
 import type { notification } from "@prisma/client";
 import type { UserResponse } from "./user-model";
 
+export type TypeNotification = "LIKE_POST" | "COMMENT_POST";
 export interface NotificationRequest {
   from_user_id?: number;
   to_user_id: number;
-  type_notification: "LIKE_POST" | "COMMENT_POST";
+  type_notification: TypeNotification;
   type_notification_id: number;
 }
 export interface NotificationResponse {
@@ -13,7 +14,7 @@ export interface NotificationResponse {
   message: string;
   is_read: boolean;
   to_user_id: number;
-  type_notification: "LIKE_POST" | "COMMENT_POST";
+  type_notification: TypeNotification;
   type_notification_id: number;
   created_at: Date;
   updated_at: Date;
