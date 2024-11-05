@@ -37,7 +37,7 @@ export class RegisterService {
       prisma.user_role.create({
         data: {
           user_id: user.id,
-          role_id: 2,
+          role_id: 6, // role user
         },
       }),
     ]);
