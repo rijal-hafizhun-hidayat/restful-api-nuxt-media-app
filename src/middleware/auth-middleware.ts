@@ -36,6 +36,7 @@ export const authMiddleware = async (
         email: true,
         bio: true,
         avatar: true,
+        email_verified_at: true,
         user_role: {
           include: {
             role: true,
@@ -59,6 +60,7 @@ export const authMiddleware = async (
       name: user.name,
       email: user.email,
       bio: user.bio,
+      email_verified_at: user.email_verified_at,
       avatar: user.avatar
         ? `${process.env.BASE_URL}/storage/profile/${user.avatar}`
         : null,

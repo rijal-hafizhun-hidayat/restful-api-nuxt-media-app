@@ -28,6 +28,9 @@ export class PostCommentService {
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return toPostCommentResponseArray(postComments);
