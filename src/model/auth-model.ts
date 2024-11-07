@@ -7,6 +7,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
+  id: number;
   name: string;
   token: string;
   role: role[];
@@ -17,6 +18,7 @@ export function toLoginResponse(
   token: string
 ): LoginResponse {
   return {
+    id: user.id,
     name: user.name,
     role: user.user_role.map((userRole) => userRole.role),
     token: token,
