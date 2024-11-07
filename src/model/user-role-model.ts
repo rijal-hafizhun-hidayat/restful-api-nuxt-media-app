@@ -1,6 +1,7 @@
 import type { role, user_role } from "@prisma/client";
 
 export interface UserWithRole {
+  id: number;
   name: string;
   email: string;
   created_at: Date;
