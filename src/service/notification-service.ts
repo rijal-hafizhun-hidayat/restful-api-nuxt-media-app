@@ -24,7 +24,6 @@ export class NotificationService {
         from_user_id: true,
         to_user_id: true,
         type_notification: true,
-        type_notification_id: true,
         message: true,
         created_at: true,
         updated_at: true,
@@ -60,7 +59,6 @@ export class NotificationService {
     }
 
     const messageNotification = NotificationUtils.setMessage(
-      user,
       requestBody.type_notification
     );
 
@@ -72,7 +70,6 @@ export class NotificationService {
           message: messageNotification as string,
           is_read: false,
           type_notification: requestBody.type_notification,
-          type_notification_id: requestBody.type_notification_id,
         },
       }),
     ]);

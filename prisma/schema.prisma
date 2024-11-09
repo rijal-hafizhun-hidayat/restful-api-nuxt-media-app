@@ -14,8 +14,8 @@ datasource db {
 }
 
 enum TypeNotification {
-  LIKE_POST
-  COMMENT_POST
+  LIKE
+  COMMENT
 }
 
 model user {
@@ -106,7 +106,6 @@ model notification {
   id                   Int              @id @default(autoincrement())
   from_user_id         Int
   to_user_id           Int
-  type_notification_id Int
   message              String           @db.VarChar(255)
   is_read              Boolean
   type_notification    TypeNotification
