@@ -1,10 +1,10 @@
 import type { user } from "@prisma/client";
 
 export class NotificationUtils {
-  static setMessage(user: user, typeNotification: string) {
-    if (typeNotification === "LIKE_POST") {
+  static setMessage(typeNotification: string) {
+    if (typeNotification === "LIKE") {
       return "menyukai postinganmu";
-    } else if (typeNotification === "COMMENT_POST") {
+    } else if (typeNotification === "COMMENT") {
       return "mengomentari postingamu";
     }
   }
