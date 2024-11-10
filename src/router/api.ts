@@ -41,6 +41,7 @@ apiRoute.get("/api/profile/:userId/post", ProfileController.getAllPostByUserId);
 //start api post
 apiRoute.get("/api/post", PostController.getAllByUserId);
 apiRoute.post("/api/post", PostController.storePostByUserId);
+apiRoute.get("/api/post/:postId", PostController.findPostByPostId);
 apiRoute.post("/api/post/:postId/like", PostLikeController.storePostLike);
 apiRoute.delete("/api/post/:postId/unlike", PostLikeController.destroyPostLike);
 apiRoute.get(
