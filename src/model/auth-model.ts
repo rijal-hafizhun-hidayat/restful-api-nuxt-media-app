@@ -13,6 +13,16 @@ export interface LoginResponse {
   role: role[];
 }
 
+export interface CurrentUser {
+  id: number;
+  name: string;
+  email: string;
+  bio: string | null;
+  email_verified_at: Date | null;
+  avatar: string | null;
+  role: role[];
+}
+
 export function toLoginResponse(
   user: UserWithRole,
   token: string

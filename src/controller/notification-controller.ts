@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import type { CostumeRequest } from "../interface/request-interface";
 import type { NotificationRequest } from "../model/notification-model";
 import { NotificationService } from "../service/notification-service";
+import type { CurrentUser } from "../model/auth-model";
 
 export class NotificationController {
   static async getAllNotificationByToUserId(
@@ -30,10 +31,10 @@ export class NotificationController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const fromUserId: number = req.currentUser!.id;
+      const currentUser: CurrentUser = req.currentUser as CurrentUser;
       const request: NotificationRequest = req.body;
       const result = await NotificationService.storeNotification(
-        fromUserId,
+        currentUser,
         request
       );
       return res.status(200).json({

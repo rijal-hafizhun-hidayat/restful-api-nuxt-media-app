@@ -13,11 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum TypeNotification {
-  LIKE
-  COMMENT
-}
-
 model user {
   id                    Int              @id @default(autoincrement())
   name                  String           @db.VarChar(255)
@@ -103,15 +98,25 @@ model post_comment {
 }
 
 model notification {
-  id                   Int              @id @default(autoincrement())
+  id                   Int      @id @default(autoincrement())
   from_user_id         Int
   to_user_id           Int
-  message              String           @db.VarChar(255)
+  message              String   @db.VarChar(255)
+  content_reference    String   @db.VarChar(255)
   is_read              Boolean
-  type_notification    TypeNotification
-  created_at           DateTime         @default(now())
-  updated_at           DateTime         @updatedAt
+  notification_type_id Int
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
 
-  from_user user @relation("from_user", fields: [from_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  to_user   user @relation("to_user", fields: [to_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  from_user         user              @relation("from_user", fields: [from_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  to_user           user              @relation("to_user", fields: [to_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  notification_type notification_type @relation(fields: [notification_type_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model notification_type {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique @db.VarChar(255)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  notification notification[]
 }

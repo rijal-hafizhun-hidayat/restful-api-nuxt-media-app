@@ -1,5 +1,3 @@
-import type { user } from "@prisma/client";
-
 export class NotificationUtils {
   static setMessage(typeNotification: string) {
     if (typeNotification === "LIKE") {
