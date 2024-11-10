@@ -32,7 +32,7 @@ export function toPostCommentResponseArray(
 }
 
 export function toPostCommentResponse(
-  postComment: PostCommentResponse
+  postComment: PostCommentResponse & { user: ProfileRequest }
 ): PostCommentResponse {
   return {
     id: postComment.id,
@@ -41,5 +41,11 @@ export function toPostCommentResponse(
     updated_at: postComment.updated_at,
     user_id: postComment.user_id,
     post_id: postComment.post_id,
+    user: {
+      name: postComment.user.name,
+      avatar: postComment.user.avatar
+        ? `${process.env.BASE_URL}/storage/profile/${postComment.user.avatar}`
+        : null,
+    },
   };
 }

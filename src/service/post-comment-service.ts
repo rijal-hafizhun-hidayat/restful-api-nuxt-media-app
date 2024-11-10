@@ -53,6 +53,14 @@ export class PostCommentService {
           post_id: postId,
           comment: requestBody.comment,
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+              avatar: true,
+            },
+          },
+        },
       }),
     ]);
 
