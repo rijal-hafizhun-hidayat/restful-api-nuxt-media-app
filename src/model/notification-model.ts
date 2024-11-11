@@ -1,4 +1,4 @@
-import type { notification } from "@prisma/client";
+import type { notification, notification_type } from "@prisma/client";
 import type { UserResponse } from "./user-model";
 
 export interface NotificationRequest {
@@ -19,6 +19,7 @@ export interface NotificationResponse {
   created_at: Date;
   updated_at: Date;
   from_user?: UserResponse;
+  notification_type?: notification_type;
 }
 export function toNotificationResponse(
   notification: notification
@@ -37,7 +38,7 @@ export function toNotificationResponse(
 }
 
 export function toNotificationResponseArray(
-  notifications: (notification & { from_user: UserResponse })[]
+  notifications: NotificationResponse[]
 ): NotificationResponse[] {
   return notifications.map((notification) => ({
     id: notification.id,
@@ -50,11 +51,19 @@ export function toNotificationResponseArray(
     created_at: notification.created_at,
     updated_at: notification.updated_at,
     from_user: {
-      id: notification.from_user.id,
-      name: notification.from_user.name,
-      avatar: notification.from_user.avatar
-        ? `${Bun.env.BASE_URL}/storage/profile/${notification.from_user.avatar}`
+      id: notification.from_user!.id,
+      name: notification.from_user!.name,
+      avatar: notification.from_user!.avatar
+        ? `${Bun.env.BASE_URL}/storage/profile/${
+            notification.from_user!.avatar
+          }`
         : null,
+    },
+    notification_type: {
+      id: notification.notification_type!.id,
+      name: notification.notification_type!.name,
+      created_at: notification.notification_type!.created_at,
+      updated_at: notification.notification_type!.updated_at,
     },
   }));
 }
