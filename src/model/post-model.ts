@@ -38,6 +38,9 @@ export function toPostResponseArray(
     user: {
       id: post.user.id,
       name: post.user.name,
+      avatar: post.user!.avatar
+        ? `${process.env.BASE_URL}/storage/profile/${post.user!.avatar}`
+        : null,
     },
     is_liked_user: post.post_like.length > 0,
     post_like_count: post._count?.post_like,
@@ -59,6 +62,9 @@ export function toPostResponse(
     user: {
       id: post.user!.id,
       name: post.user!.name,
+      avatar: post.user!.avatar
+        ? `${process.env.BASE_URL}/storage/profile/${post.user!.avatar}`
+        : null,
     },
     is_liked_user: post.post_like!.length > 0,
     post_like_count: post._count?.post_like,

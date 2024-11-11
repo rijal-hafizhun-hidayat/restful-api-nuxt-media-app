@@ -18,6 +18,7 @@ export class PostService {
           select: {
             id: true,
             name: true,
+            avatar: true,
           },
         },
         post_like: {

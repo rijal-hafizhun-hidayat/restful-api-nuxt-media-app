@@ -35,6 +35,7 @@ export class NotificationService {
             avatar: true,
           },
         },
+        notification_type: true
       },
     });
 
