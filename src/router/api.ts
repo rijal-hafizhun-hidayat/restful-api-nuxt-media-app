@@ -8,6 +8,7 @@ import { PostController } from "../controller/post-controller";
 import { PostLikeController } from "../controller/post-like-controller";
 import { PostCommentController } from "../controller/post-comment-controller";
 import { NotificationController } from "../controller/notification-controller";
+import { PostFileController } from "../controller/post-file-controller";
 
 const apiRoute = express.Router();
 
@@ -65,5 +66,8 @@ apiRoute.patch(
   NotificationController.updateNotificationIsRead
 );
 //end api notification
+
+//start post_file
+apiRoute.post("/api/post_file", PostFileController.storePostFile);
 
 export { apiRoute };
