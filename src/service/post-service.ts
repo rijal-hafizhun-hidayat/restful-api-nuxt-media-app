@@ -38,8 +38,6 @@ export class PostService {
       },
     });
 
-    //return posts;
-
     return toPostResponseArray(posts);
   }
 
@@ -57,6 +55,28 @@ export class PostService {
         data: {
           user_id: userId,
           content: requestBody.content,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          post_like: {
+            where: {
+              user_id: userId,
+            },
+            select: {
+              id: true,
+            },
+          },
+          _count: {
+            select: {
+              post_like: true,
+              post_comment: true,
+            },
+          },
         },
       }),
     ]);

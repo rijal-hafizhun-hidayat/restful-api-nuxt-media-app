@@ -72,6 +72,7 @@ model post {
   user         user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   post_like    post_like[]
   post_comment post_comment[]
+  post_file    post_file?
 }
 
 model post_like {
@@ -119,4 +120,14 @@ model notification_type {
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
   notification notification[]
+}
+
+model post_file {
+  id         Int      @id @default(autoincrement())
+  post_id    Int      @unique
+  file       String?  @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  post post @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

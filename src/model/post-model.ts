@@ -38,7 +38,7 @@ export function toPostResponseArray(
     user: {
       id: post.user.id,
       name: post.user.name,
-      avatar: post.user!.avatar
+      avatar: post.user.avatar
         ? `${process.env.BASE_URL}/storage/profile/${post.user!.avatar}`
         : null,
     },
@@ -49,9 +49,9 @@ export function toPostResponseArray(
 }
 
 export function toPostResponse(
-  post: PostResponse & { user?: UserResponse } & {
-    post_like?: PostLikeResponse[];
-  } & { _count?: PostCount }
+  post: PostResponse & { user: UserResponse } & {
+    post_like: PostLikeResponse[];
+  } & { _count: PostCount }
 ): PostResponse {
   return {
     id: post.id,
@@ -60,14 +60,14 @@ export function toPostResponse(
     created_at: post.created_at,
     updated_at: post.updated_at,
     user: {
-      id: post.user!.id,
-      name: post.user!.name,
-      avatar: post.user!.avatar
+      id: post.user?.id,
+      name: post.user?.name,
+      avatar: post.user?.avatar
         ? `${process.env.BASE_URL}/storage/profile/${post.user!.avatar}`
         : null,
     },
-    is_liked_user: post.post_like!.length > 0,
-    post_like_count: post._count?.post_like,
-    post_comment_count: post._count?.post_comment,
+    is_liked_user: post.post_like.length > 0,
+    post_like_count: post._count.post_like,
+    post_comment_count: post._count.post_comment,
   };
 }
