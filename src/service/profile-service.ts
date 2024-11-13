@@ -197,6 +197,7 @@ export class ProfileService {
           select: {
             id: true,
             name: true,
+            avatar: true,
           },
         },
         post_like: {
@@ -251,6 +252,7 @@ export class ProfileService {
           select: {
             id: true,
             name: true,
+            avatar: true,
           },
         },
         post_like: {

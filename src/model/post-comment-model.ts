@@ -22,6 +22,7 @@ export function toPostCommentResponseArray(
     comment: postComment.comment,
     created_at: postComment.created_at,
     updated_at: postComment.updated_at,
+    user_id: postComment.user_id,
     user: {
       name: postComment.user.name,
       avatar: postComment.user.avatar
