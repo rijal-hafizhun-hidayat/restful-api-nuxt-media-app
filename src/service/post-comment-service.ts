@@ -21,6 +21,7 @@ export class PostCommentService {
         comment: true,
         created_at: true,
         updated_at: true,
+        user_id: true,
         user: {
           select: {
             name: true,
