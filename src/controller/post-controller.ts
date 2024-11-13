@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Response } from "express";
 import { PostService } from "../service/post-service";
 import type { PostRequest } from "../model/post-model";
 import type { CostumeRequest } from "../interface/request-interface";

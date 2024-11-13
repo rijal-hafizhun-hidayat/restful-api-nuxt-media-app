@@ -1,4 +1,4 @@
-import type { user } from "@prisma/client";
+import type { user, user_follows } from "@prisma/client";
 
 export interface ProfileRequest {
   id?: number;
@@ -9,6 +9,14 @@ export interface ProfileRequest {
   oldPassword?: string;
   newPassword?: string;
   avatar?: string | null;
+}
+
+export interface ProfileResponse {
+  id: number;
+  name: string;
+  bio: string | null;
+  avatar: string | null;
+  followed_users: user_follows[];
 }
 
 export function toUpdateNameResponse(user: user): ProfileRequest {
@@ -41,7 +49,7 @@ export function toUpdateProfileAvatar(user: user): ProfileRequest {
   };
 }
 
-export function toProfileResponse(profile: user): ProfileRequest {
+export function toProfileResponse(profile: ProfileResponse): ProfileResponse {
   return {
     id: profile.id,
     name: profile.name,
@@ -49,5 +57,11 @@ export function toProfileResponse(profile: user): ProfileRequest {
     avatar: profile.avatar
       ? `${process.env.BASE_URL}/storage/profile/${profile.avatar}`
       : null,
+    followed_users: profile.followed_users.map((followedUser) => ({
+      id: followedUser.id,
+      followed_user_id: followedUser.followed_user_id,
+      follower_user_id: followedUser.follower_user_id,
+      followed_at: followedUser.followed_at,
+    })),
   };
 }

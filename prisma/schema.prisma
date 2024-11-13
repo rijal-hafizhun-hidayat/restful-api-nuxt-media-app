@@ -31,6 +31,8 @@ model user {
   post_comment          post_comment[]
   notification_sent     notification[]   @relation("from_user")
   notification_received notification[]   @relation("to_user")
+  follower_users        user_follows[]   @relation("follower_users")
+  followed_users        user_follows[]   @relation("followed_users")
 }
 
 model role {
@@ -130,4 +132,14 @@ model post_file {
   updated_at DateTime @updatedAt
 
   post post @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model user_follows {
+  id               Int      @id @default(autoincrement())
+  follower_user_id Int
+  followed_user_id Int
+  followed_at      DateTime @default(now())
+
+  follower_users user @relation("follower_users", fields: [follower_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  followed_users user @relation("followed_users", fields: [followed_user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
