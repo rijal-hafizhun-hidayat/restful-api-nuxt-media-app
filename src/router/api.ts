@@ -9,6 +9,7 @@ import { PostLikeController } from "../controller/post-like-controller";
 import { PostCommentController } from "../controller/post-comment-controller";
 import { NotificationController } from "../controller/notification-controller";
 import { PostFileController } from "../controller/post-file-controller";
+import { UserFollowController } from "../controller/user-follow-controller";
 
 const apiRoute = express.Router();
 
@@ -69,5 +70,9 @@ apiRoute.patch(
 
 //start post_file
 apiRoute.post("/api/post_file", PostFileController.storePostFile);
+//end post_file
+
+//start user_follow
+apiRoute.post("/api/user_follow", UserFollowController.storeUserFollow);
 
 export { apiRoute };

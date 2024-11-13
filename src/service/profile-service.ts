@@ -9,12 +9,14 @@ import {
   toUpdateProfileAvatar,
   toUserVerified,
   type ProfileRequest,
+  type ProfileResponse,
 } from "../model/profile-model";
 import { UserUtils } from "../utils/user-utils";
 import { ProfileValidation } from "../validation/profile-validation";
 import { Validation } from "../validation/validation";
 import { FileUtils } from "../utils/file-utils";
 import { toPostResponseArray, type PostResponse } from "../model/post-model";
+import type { CurrentUser } from "../model/auth-model";
 
 export class ProfileService {
   static async updateProfileName(
@@ -214,10 +216,21 @@ export class ProfileService {
     return toPostResponseArray(posts);
   }
 
-  static async getProfileByUserId(userId: number): Promise<ProfileRequest> {
+  static async getProfileByUserId(
+    userId: number,
+    currentUser: CurrentUser
+  ): Promise<ProfileResponse> {
     const profile = await prisma.user.findUnique({
       where: {
         id: userId,
+      },
+      include: {
+        followed_users: {
+          where: {
+            follower_user_id: currentUser.id,
+            followed_user_id: userId,
+          },
+        },
       },
     });
 

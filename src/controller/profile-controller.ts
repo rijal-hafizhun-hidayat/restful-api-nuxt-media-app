@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import type { ProfileRequest } from "../model/profile-model";
 import { ProfileService } from "../service/profile-service";
 import type { CostumeRequest } from "../interface/request-interface";
+import type { CurrentUser } from "../model/auth-model";
 
 export class ProfileController {
   static async getProfile(
@@ -21,13 +22,17 @@ export class ProfileController {
   }
 
   static async getProfileByUserId(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
+      const currentUser: CurrentUser = req.currentUser as CurrentUser;
       const userId: number = parseInt(req.params.userId);
-      const result = await ProfileService.getProfileByUserId(userId);
+      const result = await ProfileService.getProfileByUserId(
+        userId,
+        currentUser
+      );
       return res.status(200).json({
         statusCode: 200,
         message: "success get profile",
