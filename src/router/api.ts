@@ -10,6 +10,7 @@ import { PostCommentController } from "../controller/post-comment-controller";
 import { NotificationController } from "../controller/notification-controller";
 import { PostFileController } from "../controller/post-file-controller";
 import { UserFollowController } from "../controller/user-follow-controller";
+import { Navbar } from "../controller/navbar-controller";
 
 const apiRoute = express.Router();
 
@@ -74,5 +75,9 @@ apiRoute.post("/api/post_file", PostFileController.storePostFile);
 
 //start user_follow
 apiRoute.post("/api/user_follow", UserFollowController.storeUserFollow);
+//end user_follow
+
+//start navbar
+apiRoute.get("/api/navbar", Navbar.getCount);
 
 export { apiRoute };
