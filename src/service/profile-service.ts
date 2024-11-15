@@ -232,6 +232,11 @@ export class ProfileService {
             followed_user_id: userId,
           },
         },
+        _count: {
+          select: {
+            followed_users: true,
+          },
+        },
       },
     });
 

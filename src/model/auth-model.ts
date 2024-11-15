@@ -21,6 +21,7 @@ export interface CurrentUser {
   email_verified_at: Date | null;
   avatar: string | null;
   role: role[];
+  followed_user_count: number;
 }
 
 export function toLoginResponse(
