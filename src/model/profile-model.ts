@@ -11,12 +11,26 @@ export interface ProfileRequest {
   avatar?: string | null;
 }
 
+export interface Profile {
+  id: number;
+  name: string;
+  bio: string | null;
+  avatar: string | null;
+  _count: ProfileWithCount;
+  followed_users: user_follows[];
+}
+
 export interface ProfileResponse {
   id: number;
   name: string;
   bio: string | null;
   avatar: string | null;
+  followed_user_count: number;
   followed_users: user_follows[];
+}
+
+export interface ProfileWithCount {
+  followed_users: number;
 }
 
 export function toUpdateNameResponse(user: user): ProfileRequest {
@@ -49,11 +63,12 @@ export function toUpdateProfileAvatar(user: user): ProfileRequest {
   };
 }
 
-export function toProfileResponse(profile: ProfileResponse): ProfileResponse {
+export function toProfileResponse(profile: Profile): ProfileResponse {
   return {
     id: profile.id,
     name: profile.name,
     bio: profile.bio ?? null,
+    followed_user_count: profile._count.followed_users,
     avatar: profile.avatar
       ? `${process.env.BASE_URL}/storage/profile/${profile.avatar}`
       : null,

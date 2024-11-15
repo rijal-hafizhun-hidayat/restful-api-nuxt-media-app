@@ -42,6 +42,11 @@ export const authMiddleware = async (
             role: true,
           },
         },
+        _count: {
+          select: {
+            followed_users: true,
+          },
+        },
       },
     });
 
@@ -65,6 +70,7 @@ export const authMiddleware = async (
         ? `${process.env.BASE_URL}/storage/profile/${user.avatar}`
         : null,
       role: user.user_role.map((role) => role.role),
+      followed_user_count: user._count.followed_users,
     };
 
     req.currentUser = formatUser;
