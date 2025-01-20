@@ -5,6 +5,7 @@ import type {
   ResetPasswordRequest,
   UpdatePasswordRequest,
 } from "../model/reset-password-model";
+import type { CostumeRequest } from "../interface/request-interface";
 
 export class AuthController {
   static async login(
@@ -62,13 +63,13 @@ export class AuthController {
   }
 
   static async getMe(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       return res.status(200).json({
-        data: (req as any).currentUser,
+        data: req.currentUser,
       });
     } catch (error) {
       next(error);

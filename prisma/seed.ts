@@ -15,7 +15,20 @@ async function main() {
       },
     ],
   });
+  const notificationTypes = await prisma.notification_type.createMany({
+    data: [
+      {
+        id: 1,
+        name: "like",
+      },
+      {
+        id: 2,
+        name: "comment",
+      },
+    ],
+  });
   console.log(roles);
+  console.log(notificationTypes);
 }
 main()
   .then(async () => {

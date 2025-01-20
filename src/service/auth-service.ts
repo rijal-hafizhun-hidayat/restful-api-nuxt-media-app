@@ -1,6 +1,10 @@
 import { prisma } from "../app/database";
 import { ErrorResponse } from "../error/error-response";
-import { toLoginResponse, type LoginRequest } from "../model/auth-model";
+import {
+  toLoginResponse,
+  type LoginRequest,
+  type LoginResponse,
+} from "../model/auth-model";
 import type { EmailRequest } from "../model/email-model";
 import {
   toResetPasswordResponse,
@@ -15,9 +19,10 @@ import { TokenUtils } from "../utils/token-utils";
 import { UserUtils } from "../utils/user-utils";
 import { AuthValidation } from "../validation/auth-validation";
 import { Validation } from "../validation/validation";
+// import { CookiesUtils } from "../utils/cookies-utils";
 
 export class AuthService {
-  static async login(request: LoginRequest): Promise<string> {
+  static async login(request: LoginRequest): Promise<LoginResponse> {
     const requestBody: LoginRequest = Validation.validate(
       AuthValidation.loginValidation,
       request
@@ -42,7 +47,7 @@ export class AuthService {
 
     const token = await TokenUtils.generate(userId);
 
-    return toLoginResponse(token);
+    return toLoginResponse(user, token);
   }
 
   static async resetPassword(

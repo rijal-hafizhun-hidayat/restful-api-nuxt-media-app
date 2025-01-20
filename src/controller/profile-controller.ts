@@ -1,22 +1,42 @@
 import type { NextFunction, Request, Response } from "express";
-import type {
-  UpdateEmailRequest,
-  UpdateNameRequest,
-  UpdateProfilePasswordRequest,
-} from "../model/profile-model";
+import type { ProfileRequest } from "../model/profile-model";
 import { ProfileService } from "../service/profile-service";
+import type { CostumeRequest } from "../interface/request-interface";
+import type { CurrentUser } from "../model/auth-model";
 
 export class ProfileController {
   static async getProfile(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
       return res.status(200).json({
         statusCode: 200,
-        message: "success",
-        data: (req as any).currentUser,
+        message: "success get profile",
+        data: req.currentUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getProfileByUserId(
+    req: CostumeRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const currentUser: CurrentUser = req.currentUser as CurrentUser;
+      const userId: number = parseInt(req.params.userId);
+      const result = await ProfileService.getProfileByUserId(
+        userId,
+        currentUser
+      );
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success get profile",
+        data: result,
       });
     } catch (error) {
       next(error);
@@ -24,12 +44,12 @@ export class ProfileController {
   }
 
   static async verifProfile(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const userId: number = (req as any).currentUser.id;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.verifProfile(userId);
       return res.status(200).json({
         statusCode: 200,
@@ -42,14 +62,14 @@ export class ProfileController {
   }
 
   static async updateProfileName(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateNameRequest = req.body as UpdateNameRequest;
-      const userId: number = (req as any).currentUser.id;
-      const result: UpdateNameRequest = await ProfileService.updateProfileName(
+      const request: ProfileRequest = req.body as ProfileRequest;
+      const userId: number = req.currentUser!.id;
+      const result: ProfileRequest = await ProfileService.updateProfileName(
         request,
         userId
       );
@@ -64,13 +84,13 @@ export class ProfileController {
   }
 
   static async updateProfileEmail(
-    req: Request,
+    req: CostumeRequest,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateEmailRequest = req.body as UpdateEmailRequest;
-      const userId: number = (req as any).currentUser.id;
+      const request: ProfileRequest = req.body as ProfileRequest;
+      const userId: number = req.currentUser!.id;
       const result = await ProfileService.updateProfileEmail(request, userId);
       return res.status(200).json({
         statusCode: 200,
@@ -83,17 +103,91 @@ export class ProfileController {
   }
 
   static async updateProfilePassword(
+    req: CostumeRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const request: ProfileRequest = req.body as ProfileRequest;
+      const userId: number = req.currentUser!.id;
+      await ProfileService.updateProfilePassword(request, userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success update password",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateProfileBio(
+    req: CostumeRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const request: ProfileRequest = req.body as ProfileRequest;
+      const userId: number = req.currentUser!.id;
+      const result = await ProfileService.updateProfileBio(request, userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success update bio",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateProfileAvatar(
+    req: CostumeRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const file = req.file as Express.Multer.File;
+      const userId: number = req.currentUser!.id;
+      const result = await ProfileService.updateProfileAvatar(file, userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success update avatar",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getAllPostByCurrentUser(
+    req: CostumeRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const userId: number = req.currentUser!.id;
+      const result = await ProfileService.getAllPostByCurrentUser(userId);
+      return res.status(200).json({
+        statusCode: 200,
+        message: "success get profile active post",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getAllPostByUserId(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> {
     try {
-      const request: UpdateProfilePasswordRequest = req.body;
-      const userId: number = (req as any).currentUser.id;
-      await ProfileService.updateProfilePassword(request, userId);
+      const userId: number = parseInt(req.params.userId);
+      const result = await ProfileService.getAllPostByUserId(userId);
       return res.status(200).json({
         statusCode: 200,
-        message: "success update password",
+        message: "success get profile post",
+        data: result,
       });
     } catch (error) {
       next(error);

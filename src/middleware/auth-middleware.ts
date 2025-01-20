@@ -1,17 +1,17 @@
 import type { NextFunction, Request, Response } from "express";
-import { ErrorResponse } from "../error/error-response";
 import { TokenUtils } from "../utils/token-utils";
 import { prisma } from "../app/database";
-import type { role } from "@prisma/client";
+import type { CostumeRequest } from "../interface/request-interface";
 
 export const authMiddleware = async (
-  req: Request,
+  req: CostumeRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  const authHeader = req.headers.authorization;
+  const authToken = req.headers.authorization;
+  // const authToken = req.cookies.token;
 
-  if (!authHeader) {
+  if (!authToken) {
     return res
       .status(403)
       .json({
@@ -21,7 +21,7 @@ export const authMiddleware = async (
       .end();
   }
 
-  const [, token] = authHeader.split(" ");
+  const [, token] = authToken.split(" ");
 
   try {
     const decoded = await TokenUtils.verifyToken(token);
@@ -34,9 +34,17 @@ export const authMiddleware = async (
         id: true,
         name: true,
         email: true,
+        bio: true,
+        avatar: true,
+        email_verified_at: true,
         user_role: {
           include: {
             role: true,
+          },
+        },
+        _count: {
+          select: {
+            followed_users: true,
           },
         },
       },
@@ -56,17 +64,30 @@ export const authMiddleware = async (
       id: user.id,
       name: user.name,
       email: user.email,
+      bio: user.bio,
+      email_verified_at: user.email_verified_at,
+      avatar: user.avatar
+        ? `${process.env.BASE_URL}/storage/profile/${user.avatar}`
+        : null,
       role: user.user_role.map((role) => role.role),
+      followed_user_count: user._count.followed_users,
     };
 
-    (req as any).currentUser = formatUser;
+    req.currentUser = formatUser;
     return next();
   } catch (error: any) {
+    let errorMessage = "Token invalid";
+    if (error.name === "TokenExpiredError") {
+      errorMessage = "Token expired";
+    } else if (error.name === "JsonWebTokenError") {
+      errorMessage = "Token malformed";
+    }
+
     return res
       .status(403)
       .json({
         statusCode: 403,
-        errors: error.message,
+        errors: errorMessage,
       })
       .end();
   }
